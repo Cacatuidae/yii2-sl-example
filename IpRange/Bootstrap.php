@@ -2,6 +2,9 @@
 namespace cacatuidae\ipRange;
 
 use cacatuidae\ipRange\controllers\IndexController;
+use cacatuidae\ipRange\controllers\MethodController;
+use cacatuidae\ipRange\factory\MethodFactory;
+use cacatuidae\ipRange\interfaces\IMethodFactory;
 use cacatuidae\ipRange\interfaces\IProvider;
 use cacatuidae\ipRange\interfaces\ISearchModel;
 use cacatuidae\ipRange\interfaces\IUploadModel;
@@ -35,13 +38,14 @@ class Bootstrap implements BootstrapInterface
             $moduleId = $module->id;
             $app->getUrlManager()->addRules([
                 'iprange' => $moduleId . '/index/index',
-                'iprange/method/<method:\w+>' => $moduleId . '/index/method',
+                'iprange/method/<method:\w+>' => $moduleId . '/method/index',
             ], false);
         }
         Yii::$container->set('IpRangeExtractsIpWidget', ExtractsIpWidget::class);
         Yii::$container->set('IpRangeProvider', ArrayProvider::class);
         Yii::$container->set('IpRangeStorage', DiskSessionStorage::class);
         Yii::$container->set('IpRangeReader', CsvReader::class);
+        Yii::$container->set('IpRangeMethodFactory', MethodFactory::class);
         Yii::$container->set('IpRangeSearchModel', function(Container $container, array $params, array $config) {
             /* @var $reader IReader */
             $reader = $container->get('IpRangeReader');
@@ -68,6 +72,14 @@ class Bootstrap implements BootstrapInterface
             $uploadModel = $container->get('IpRangeUploadModel');
             $searchModel = $container->get('IpRangeSearchModel');
             return new IndexController($id, $module, $uploadModel, $searchModel, $config);
+        });
+        Yii::$container->set(MethodController::class, function(Container $container, array $params, array $config) {
+            /* @var $methodFactory IMethodFactory */
+            /* @var $id string */
+            /* @var $module \cacatuidae\ipRange\Module */
+            list($id, $module) = $params;
+            $methodFactory = $container->get('IpRangeMethodFactory');
+            return new MethodController($id, $module, $methodFactory, $config);
         });
     }
 }

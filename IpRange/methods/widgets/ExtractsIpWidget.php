@@ -32,6 +32,6 @@ class ExtractsIpWidget extends Widget implements IMethodWidget
         parent::run();
 
         return $this->render('extract_ip/index', [
-            'url' => Url::toRoute(['method', 'method' => $this->getMethodName()])]);
+            'url' => Url::toRoute(['method/index', 'method' => $this->getMethodName()])]);
     }
 }

@@ -4,10 +4,8 @@ namespace cacatuidae\ipRange\controllers;
 use cacatuidae\ipRange\assets\GridAsset;
 use cacatuidae\ipRange\interfaces\ISearchModel;
 use cacatuidae\ipRange\interfaces\IUploadModel;
-use cacatuidae\ipRange\factory\MethodFactory;
 use yii\base\Exception;
 use yii\filters\VerbFilter;
-use yii\helpers\ArrayHelper;
 use cacatuidae\ipRange\Module;
 use Yii;
 use yii\web\Controller;
@@ -95,16 +93,5 @@ class IndexController extends Controller
         return $this->render('index', ['uploadModel' => $this->uploadModel, 'searchModel' => $this->searchModel,
             'searchProvider' => $searchProvider, 'gridColumns' => $gridColumns,
             'gridAttributeOptions' => $gridAttributeOptions, 'gridWidgets' => $gridWidgets]);
-    }
-
-    /**
-     * @param $method
-     * @return mixed
-     */
-    public function actionMethod($method)
-    {
-        $params = ArrayHelper::merge(Yii::$app->request->getQueryParams(), Yii::$app->request->post());
-        $object = MethodFactory::factory($method, ['params' => $params]);
-        return $object->run();
     }
 }

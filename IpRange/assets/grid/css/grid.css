@@ -1,0 +1,9 @@
+.ipRangeBox {}
+.IpRangeUploadFormBtn {padding-top: 15px}
+.ipRangeTable {}
+.ipRangeTable thead tr.filters td input,
+.ipRangeTable thead tr.filters select {width: 100%; margin-left:0; margin-right: 0;}
+.ipRangeTable tbody tr td:first-child {white-space: nowrap;}
+
+.ipRangeGridHeader {}
+#ipRangeOptionsForm {padding-top: 6px}
